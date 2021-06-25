@@ -7,11 +7,12 @@
 @Time    : 2021/6/17 20:19
 
 """
-import csv
-import numpy as np
+
 from selenium import webdriver
 import time
 from datetime import datetime
+
+from selenium.webdriver.chrome.options import Options
 
 from util.file_util import read_csv_data
 
@@ -25,14 +26,22 @@ class DailyCheck(object):
         user_info = read_csv_data(fpath)
 
         chrome_driver = 'util/chromedriver.exe'
-        browser = webdriver.Chrome(executable_path=chrome_driver)
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument("--no-sandbox")
+        browser = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
         if act_type is ZHUCE_TAG:
             zhuce_info = DailyCheck().re_login(ZHUCE_TAG, [0, 1], browser, username=check_username,
                                                password=check_password)
             return zhuce_info
         for info in user_info[1:]:
             chrome_driver = 'util/chromedriver.exe'
-            browser = webdriver.Chrome(executable_path=chrome_driver)
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument("--no-sandbox")
+            browser = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
             DailyCheck().re_login(None, info, browser)
 
     @staticmethod
@@ -108,7 +117,7 @@ class DailyCheck(object):
 
 
 if __name__ == '__main__':
-    DailyCheck.check(fpath='data/login_info.csv', act_type=None)
+    DailyCheck.check(fpath='../login_info.csv', act_type=None)
     # chrome_driver = 'util/chromedriver.exe'
     # browser = webdriver.Chrome(executable_path=chrome_driver)
     # info = DailyCheck().re_login(ZHUCE_TAG, [0, 1], browser, username='20900', password='22222')

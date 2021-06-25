@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_apscheduler import APScheduler
 
 from daily_check import DailyCheck
@@ -19,9 +19,10 @@ def save_info(username, password):
                                   check_password=password)
     if zhuce_info is True:
         save_csv_data(username, password, _user_info_address)
+        return_info = f'{username} insert seccess'
     else:
-        print(f'{username} or {password} is invalid,Please input again!')
-    return {}
+        return_info = f'{username} or {password} is invalid,Please input again!'
+    return jsonify(return_info)
 
 
 if __name__ == '__main__':
