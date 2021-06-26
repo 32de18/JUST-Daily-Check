@@ -15,6 +15,7 @@ from datetime import datetime
 from selenium.webdriver.chrome.options import Options
 
 from util.file_util import read_csv_data
+from util.ocr_util import download_yzm,get_yzm_img
 
 RELOGIN_TAG = 'RELOGIN'
 ZHUCE_TAG = 'ZHUCE_INFO'
@@ -24,7 +25,6 @@ class DailyCheck(object):
     @classmethod
     def check(cls, fpath, act_type, check_username='', check_password=''):
         user_info = read_csv_data(fpath)
-
         chrome_driver = 'util/chromedriver.exe'
         chrome_options = Options()
         chrome_options.add_argument('--headless')
@@ -52,15 +52,18 @@ class DailyCheck(object):
         user_name.send_keys(str(username))
         user_password = browser.find_element_by_id('password')
         user_password.send_keys(str(password))
-        button = browser.find_element_by_class_name('login_btn')
         time.sleep(1)
         try:
+            get_yzm_img(browser)
             yzm_info = browser.find_element_by_xpath("//*[@id='authcode']")
-            yzm_info.send_keys(str('yzm'))  # 输入验证码
+            yzm = str(download_yzm())
+            yzm_info.send_keys(yzm)
         except:
             pass
-        button.click()
+
         try:
+            button = browser.find_element_by_class_name('login_btn')
+            button.click()
             login_info = browser.find_element_by_xpath("//*[@id='msg1']")  # 验证码输入错误
             if login_info.text == '验证码信息无效。':
                 print(f"{username}:验证码输入错误")
@@ -81,7 +84,7 @@ class DailyCheck(object):
             tw = browser.find_element_by_id('input_tw')
             tw.send_keys('36.5')
             zwtw = browser.find_element_by_id('input_zwtw')
-            zwtw.send_keys('36.6')
+            zwtw.send_keys('36.3')
             button = browser.find_element_by_id('post')
             button.click()
             print(f'{username}于{datetime.now()}打卡成功！')
@@ -99,8 +102,8 @@ class DailyCheck(object):
             if login_type is RELOGIN_TAG:
                 _begin_relogin += 1
                 print(f'{info[0]}登录第{_begin_relogin}次')
-                if _begin_relogin == 3:
-                    print(f'{info[0]}尝试登录三次都失败')
+                if _begin_relogin == 5:
+                    print(f'{info[0]}尝试登录五次都失败')
                     browser.close()
                     return False
             elif login_type is True:
@@ -117,7 +120,7 @@ class DailyCheck(object):
 
 
 if __name__ == '__main__':
-    DailyCheck.check(fpath='../login_info.csv', act_type=None)
+    DailyCheck.check(fpath='data/login_info.csv', act_type=None)
     # chrome_driver = 'util/chromedriver.exe'
     # browser = webdriver.Chrome(executable_path=chrome_driver)
     # info = DailyCheck().re_login(ZHUCE_TAG, [0, 1], browser, username='20900', password='22222')

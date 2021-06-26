@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>每日自动打卡</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.validate.min.js" ></script>
+{#    <script src="../static/js/index.js"></script>#}
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!--font-awesome 核心我CSS 文件-->
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="form-row">
+        <form class="form-horizontal col-md-offset-6 col-log-offset-6 col-xl-offset-6" id="index_form" method="post">
+            <h3 class="form-title">欢迎来到自动打卡，还要啥自行车</h3>
+            <div class="col-sm-9 col-md-9">
+                <div class="form-group">
+                    <i class="fa fa-user fa-lg"></i>
+                    <input class="form-control required" type="text" placeholder="请输入学号" name="number" id="number">
+                </div>
+                <div class="form-group">
+                    <i class="fa fa-lock fa-lg"></i>
+                    <input class="form-control required" type="password" placeholder="请输入密码" name="password" id="password">
+                </div>
+                <p id="hint"  style="color: pink;font-size: 16px"></p>
+                <p id = 'dataid' style="color: aqua">{{ data }}</p>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" id="true_btn" value="确认" onclick="register()">
+                    <input type="submit" class="btn btn-info" id="back_btn" value="清除">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<footer class="navbar-fixed-bottom">
+    <div class="container">
+        <p class="foot">©2021-2023 JUST-NLP 版权所有</p>
+        <p class="foot">浙公网安备 33010602009975号浙B2-20080101-4</p>
+    </div>
+</footer>
+
+</body>
+<script type="text/javascript">function register() {
+    var stu_number = document.getElementById('number').value;
+    var stu_pwd = document.getElementById('password').value;
+    if (stu_number == '') {
+        hint.innerText = '提示：请输入学号';
+        return;
+    } else if (stu_pwd == '') {
+        hint.innerText = '提示：请输入密码';
+        return;
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:38080/',
+            data: JSON.stringify({
+                "number": stu_number,
+                "password": stu_pwd
+            }),
+            dataType: 'json',
+            success: function (res) {
+                //var data = document.getElementById('dataid').value;
+                alert(res);
+               // console.log(data)
+            },
+            error: function (err) {
+                {#alert(err);#}
+
+            }
+        })
+    }
+
+}
+</script>
+</html>

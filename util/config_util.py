@@ -11,7 +11,7 @@ import configparser
 
 
 class ConfigUtils(object):
-    DEFT_CONFIG_PATH = '../config.ini'
+    DEFT_CONFIG_PATH = 'data/config.ini'
 
     KEY_SECS_HTTP = 'Http'
     KEY_HTTP_PORT = 'http_port'
@@ -19,7 +19,7 @@ class ConfigUtils(object):
 
     KEY_SECS_FILE = 'File'
     KEY_USER_INFO_ADDRESS = 'user_info_address'
-    DEFT_USER_INFO_ADDRESS = '../login_info.csv'
+    DEFT_USER_INFO_ADDRESS = 'data/login_info.csv'
     KEY_LOG_ADDRESS = 'log_address'
     DEFT_LOG_ADDRESS = 'nohup.out'
 

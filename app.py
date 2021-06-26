@@ -7,10 +7,33 @@ import os
 from util.config_util import ConfigUtils
 from util.email_util import send_email
 from util.file_util import save_csv_data
+import json
+from flask import request, render_template
 
 os.environ['TZ'] = 'Asia/Shanghai'
 app = Flask(__name__)
 scheduler = APScheduler()
+
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        print(request.method)
+        # data = json.loads(request.get_data(as_text=True))
+        username = request.form.get('number')
+        password = request.form.get('password')
+        print(username, password)
+        zhuce_info = DailyCheck.check(_user_info_address, act_type='ZHUCE_INFO', check_username=username,
+                                      check_password=password)
+        if zhuce_info is True:
+            save_csv_data(username, password, _user_info_address)
+            return_info = f'{username} insert success'
+        else:
+            return_info = f'{username} or {password} is invalid,Please input again!'
+        return render_template('index.html', data=return_info)
+        # return jsonify(number)
+    else:
+        return render_template('index.html', data='')
 
 
 @app.route('/<username>/<password>', methods=['GET', 'POST'])
