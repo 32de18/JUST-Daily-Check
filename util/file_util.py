@@ -14,7 +14,7 @@ import os
 def save_csv_data(username, password, fpath):
     all_info = read_csv_data(fpath)
     for info in all_info[1:]:
-        if username == info[0]:
+        if info and username == info[0]:
             delete_csv_data(info[0], info[1], all_info, fpath)
     with open(fpath, 'a+', newline='') as csv_writer:
         writer = csv.writer(csv_writer)
@@ -43,7 +43,8 @@ def delete_csv_data(username, password, a, fpath):
 
 
 if __name__ == '__main__':
-    save_csv_data("1", "2")
+    a=read_csv_data("../data/login_info.csv")
+    print(a)
     # save_csv_data("2", "5")
     # save_csv_data("3", "6")
     # save_csv_data("1", "7")
