@@ -1,0 +1,67 @@
+.git_image{
+    position:fixed;
+}
+img {width: 100%;}
+.left{ width:30%; float:left}
+.right{ width:70%; float:right;}
+body {
+    background: url('bg.jpg') no-repeat ;
+    background-size：100% 100%;background-attachment:fixed;
+    background-size: cover;
+    font-size: 16px;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+#index_form {
+    width: 500px;
+    margin-top: 250px;
+    margin-right: 350px;
+
+}
+.form-control{
+    size:100%;
+    width:50px;
+}
+.form-title {
+    font-family: 宋体;
+    font-size:28px;
+    color: #cccccc;
+    padding-left:70px;
+}
+.cs{
+    size:10%;
+}
+.content{
+margin:0 auto;
+
+}
+.fa {
+    display: inline-block;
+    top: 27px;
+    left: 6px;
+    position: relative;
+    color: #cccccc;
+}
+
+input[type="text"], input[type="password"] {
+    padding-left: 26px;
+}
+
+.foot {
+    font-family: 宋体;
+    font-size: 16px;
+    color: #cccccc;
+    text-align: center;
+}
+
+#true_btn {
+    margin-top: 20px;
+    margin-left: 100px;
+}
+
+#back_btn {
+    margin-top: 20px;
+    margin-left: 30px;
+}
