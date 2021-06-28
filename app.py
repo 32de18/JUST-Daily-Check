@@ -18,34 +18,34 @@ scheduler = APScheduler()
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print(request.method)
-        # data = json.loads(request.get_data(as_text=True))
         username = request.form.get('number')
         password = request.form.get('password')
         print(username, password)
-        zhuce_info = DailyCheck.check(_user_info_address, act_type='ZHUCE_INFO', check_username=username,
-                                      check_password=password)
-        if zhuce_info is True:
-            save_csv_data(username, password, _user_info_address)
-            return_info = f'{username} insert success'
+        if username and password:
+            zhuce_info = DailyCheck.check(_user_info_address, act_type='ZHUCE_INFO', check_username=username,
+                                          check_password=password)
+            if zhuce_info is True:
+                save_csv_data(username, password, _user_info_address)
+                return_info = f'{username} insert success'
+            else:
+                return_info = f'{username} or {password} is invalid,Please input again!'
+            return render_template('index.html', data=return_info)
         else:
-            return_info = f'{username} or {password} is invalid,Please input again!'
-        return render_template('index.html', data=return_info)
-        # return jsonify(number)
+            return render_template('index.html', data='')
     else:
         return render_template('index.html', data='')
 
 
-@app.route('/<username>/<password>', methods=['GET', 'POST'])
-def save_info(username, password):
-    zhuce_info = DailyCheck.check(_user_info_address, act_type='ZHUCE_INFO', check_username=username,
-                                  check_password=password)
-    if zhuce_info is True:
-        save_csv_data(username, password, _user_info_address)
-        return_info = f'{username} insert seccess'
-    else:
-        return_info = f'{username} or {password} is invalid,Please input again!'
-    return jsonify(return_info)
+# @app.route('/<username>/<password>', methods=['GET', 'POST'])
+# def save_info(username, password):
+#     zhuce_info = DailyCheck.check(_user_info_address, act_type='ZHUCE_INFO', check_username=username,
+#                                   check_password=password)
+#     if zhuce_info is True:
+#         save_csv_data(username, password, _user_info_address)
+#         return_info = f'{username} insert seccess'
+#     else:
+#         return_info = f'{username} or {password} is invalid,Please input again!'
+#     return jsonify(return_info)
 
 
 if __name__ == '__main__':
@@ -70,4 +70,4 @@ if __name__ == '__main__':
                               "log_address": _log_address})
     scheduler.init_app(app=app)
     scheduler.start()
-    app.run(host='0.0.0.0', port=_http_port)
+    app.run(host='127.0.0.1', port=_http_port)

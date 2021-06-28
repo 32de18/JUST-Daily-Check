@@ -15,7 +15,7 @@ from datetime import datetime
 from selenium.webdriver.chrome.options import Options
 
 from util.file_util import read_csv_data
-from util.ocr_util import download_yzm,get_yzm_img
+from util.ocr_util import download_yzm, get_yzm_img
 
 RELOGIN_TAG = 'RELOGIN'
 ZHUCE_TAG = 'ZHUCE_INFO'
@@ -25,7 +25,7 @@ class DailyCheck(object):
     @classmethod
     def check(cls, fpath, act_type, check_username='', check_password=''):
         user_info = read_csv_data(fpath)
-        chrome_driver = 'util/chromedriver.exe'
+        chrome_driver = 'util/chromedriver'
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
@@ -36,7 +36,7 @@ class DailyCheck(object):
                                                password=check_password)
             return zhuce_info
         for info in user_info[1:]:
-            chrome_driver = 'util/chromedriver.exe'
+            chrome_driver = 'util/chromedriver'
             chrome_options = Options()
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disable-gpu')
@@ -53,17 +53,18 @@ class DailyCheck(object):
         user_password = browser.find_element_by_id('password')
         user_password.send_keys(str(password))
         time.sleep(1)
-        try:
-            get_yzm_img(browser)
-            yzm_info = browser.find_element_by_xpath("//*[@id='authcode']")
-            yzm = str(download_yzm())
-            yzm_info.send_keys(yzm)
-        except:
-            pass
 
         try:
-            button = browser.find_element_by_class_name('login_btn')
-            button.click()
+            yzm_info = browser.find_element_by_xpath("//*[@id='authcode']")
+            get_yzm_img(browser)
+            yzm = str(download_yzm())
+            yzm_info.send_keys(yzm)
+        except Exception as e:
+            print(e.__class__.__name__, str(e))
+            pass
+        button = browser.find_element_by_class_name('login_btn')
+        button.click()
+        try:
             login_info = browser.find_element_by_xpath("//*[@id='msg1']")  # 验证码输入错误
             if login_info.text == '验证码信息无效。':
                 print(f"{username}:验证码输入错误")
@@ -92,7 +93,7 @@ class DailyCheck(object):
             print(f'今天{username}已经打过卡啦，不需要再重复打卡！')
 
     def re_login(self, tag, info, browser, username='', password=''):
-        _user_relogin = 3
+        _user_relogin = 5
         _begin_relogin = 0
         while _begin_relogin < _user_relogin:
             if tag == ZHUCE_TAG:

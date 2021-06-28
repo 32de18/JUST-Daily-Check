@@ -9,10 +9,10 @@
 """
 import sys
 
+import pytesseract
+
 sys.path.append('./')
 sys.path.append('../')
-
-import tesserocr
 
 try:
     from PIL import Image
@@ -21,11 +21,11 @@ except ImportError:
 
 
 def download_yzm():
-    image_path = 'picture/image.png'
+    image_path = 'image.png'
     image_get = Image.open(image_path).resize((300, 180))
     image_grayscale = image_get.convert('L')  # 灰度处理
     image_dealed = image_thresholding_method(image_grayscale)  # 二值化处理
-    result = tesserocr.image_to_text(image_dealed)  # 图像识别,image为二值化后的图像
+    result = pytesseract.image_to_string(image_dealed)
     result = result.strip()
     if not result:
         result = 'yzm'
@@ -33,16 +33,20 @@ def download_yzm():
 
 
 def get_yzm_img(browser):
-    browser.save_screenshot("picture/pic.png")
+    browser.save_screenshot("pic.png")
     code_element = browser.find_element_by_id("authcode")
     # 图片4个点的坐标位置
-    left = code_element.location['x'] + 400  # x点的坐标
-    top = code_element.location['y'] + 80  # y点的坐标
-    right = 105 + left  # 上面右边点的坐标
-    down = 47 + top  # 下面右边点的坐标
-    image = Image.open('picture/pic.png')
-    code_image = image.crop((left, top, right, down))
-    code_image.save('picture/image.png')
+    left = code_element.location['x']+225  # x点的坐标
+    top = code_element.location['y']  # y点的坐标
+    # left = code_element.location['x'] + 400  # x点的坐标
+    # top = code_element.location['y'] + 80  # y点的坐标
+    right = 80 + left
+    height = code_element.size['height'] + top
+    # right = 105 + left  # 上面右边点的坐标
+    # height = 47 + top  # 下面右边点的坐标
+    image = Image.open('pic.png')
+    code_image = image.crop((left, top, right, height))
+    code_image.save('image.png')
 
 
 def image_thresholding_method(image):
@@ -57,7 +61,6 @@ def image_thresholding_method(image):
             table.append(1)
     # 图片二值化
     image = image.point(table, '1')
-    # image.show()
     return image
 
 
