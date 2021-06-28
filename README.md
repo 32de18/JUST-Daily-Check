@@ -39,7 +39,6 @@ sudo yum localinstall google-chrome-stable_current_x86_64.rpm
 ### Step 5
 * Install Tesseract in Linux system, [Tutorial](https://blog.csdn.net/wanght89/article/details/78329546)
 ## More Info
-If you have some develop, please PR.
+* If you have some develop, please PR.
 
-### Team
-***JUST-NLP***
+* Team  ***JUST-NLP***
