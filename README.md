@@ -3,6 +3,12 @@
 ![python version](https://img.shields.io/badge/python-3.6+-orange.svg)
 ![support os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-yellow.svg)
 
+## 注意!!!
+
+**打卡系统中所提交的信息来自于上一次打卡所填写的信息，因此如有信息更改，请手动填写一次！**
+
+**有任何问题请联系ljw_rookie@163.com**
+
 ## Introduction
 * **website: http://justdailycheck.co.ax:17206/index**
   - Due to the procedure, you have to wait for five seconds while submit. 
