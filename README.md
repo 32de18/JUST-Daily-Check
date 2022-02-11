@@ -12,7 +12,7 @@
 **如果打卡失败，请重新输入正确的学号及密码**
 
 ## Introduction
-* **website: http://justdailycheck.co.ax:17206/index**
+* **website: http://justdailycheck.co.ax/index**
   - Due to the procedure, you have to wait for five seconds while submit. 
   - student number is your student ID.
   - student passsword is your password used for login portal of JUST.
